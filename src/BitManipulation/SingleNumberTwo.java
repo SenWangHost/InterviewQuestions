@@ -1,7 +1,7 @@
 /**
  *
  */
-package HashTable;
+package BitManipulation;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -51,13 +51,33 @@ public class SingleNumberTwo {
         return (thirdSum * 3 - sum) / 2;
     }
     /**
+     * This is the reference solution to this question, the solution comes from a
+     * discussion for a series of similar questions. The detailed explanation is on leetcode.
+     * @param nums the array of numbers to be considered.
+     * @return the single number which occurs only once.
+     */
+    public static int solutionRef(int[] nums) {
+        // we need to two counter and a mask.
+        int x1 = 0;
+        int x2 = 0;
+        int mask = 0;
+        for (int num : nums) {
+            x2 ^= (x1 & num);
+            x1 ^= num;
+            mask = ~(x1 & x2);
+            x1 &= mask;
+            x2 &= mask;
+        }
+        return x1;
+    }
+    /**
      * This is the test function for this question.
      * @param args
      */
     public static void main(String[] args) {
         // TODO Auto-generated method stub
         int[] array = {2, 1, 3, 1, 3, 3, 1};
-        System.out.println(SingleNumberTwo.solution2(array));
+        System.out.println(SingleNumberTwo.solutionRef(array));
     }
 
 }

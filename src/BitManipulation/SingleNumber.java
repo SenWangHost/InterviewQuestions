@@ -1,7 +1,7 @@
 /**
  *
  */
-package HashTable;
+package BitManipulation;
 
 import java.util.HashMap;
 import java.util.HashSet;
