@@ -62,14 +62,40 @@ public class CombinationSum {
         }
     }
     /**
-     * This is the iterative solution to this question, which uses stack to implement
-     * the depth first search.
+     * This is the iterative solution to this question, which uses the idea of dynamic programming.
+     * The main idea reminds an approach for solving coins/knapsack problem - to store the result
+     * for all i < target and create the solution from them. For that for each t from 1 to our target
+     * we try every candidate which is less or equal to t in ascending order.
+     * For each candidate "c" we run through all combinations for target t-c starting with the value
+     * greater or equal than c to avoid duplicates and store only ordered combinations.
      * @param candidates the array of candidate numbers to be considered.
      * @param target the target sum to be considered.
      * @return two dimensional list containing the result.
      */
     public static List<List<Integer>> solution2(int[] candidates, int target) {
-        return null;
+        Arrays.sort(candidates);
+        List<List<List<Integer>>> container = new ArrayList<List<List<Integer>>>();
+        // builds the solution from 1 to target.
+        for (int tempT = 1; tempT <= target; tempT++) {
+            // current result set for the temporary target.
+            List<List<Integer>> tempResult = new ArrayList<List<Integer>>();
+            for (int i = 0; i < candidates.length && candidates[i] <= tempT; i++) {
+                if (candidates[i] == tempT) {
+                    tempResult.add(Arrays.asList(candidates[i]));
+                } else if (candidates[i] < tempT) {
+                    for (List<Integer> list : container.get(tempT - candidates[i] - 1)) {
+                        if (candidates[i] <= list.get(0)) {
+                            List<Integer> newList = new ArrayList<Integer>();
+                            newList.add(candidates[i]);
+                            newList.addAll(list);
+                            tempResult.add(newList);
+                        }
+                    }
+                }
+            }
+            container.add(tempResult);
+        }
+        return container.get(target - 1);
     }
     /**
      * This is the test function for this question.
@@ -79,7 +105,7 @@ public class CombinationSum {
         // TODO Auto-generated method stub
         int[] test = {2, 3, 6, 7};
         int target = 7;
-        List<List<Integer>> result = CombinationSum.solution(test, target);
+        List<List<Integer>> result = CombinationSum.solution2(test, target);
         for (List<Integer> list : result) {
             System.out.println(list);
         }

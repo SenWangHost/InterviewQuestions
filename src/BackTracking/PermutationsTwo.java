@@ -92,7 +92,7 @@ public class PermutationsTwo {
      */
     public static void main(String[] args) {
         // TODO Auto-generated method stub
-        int[] test = {1, 1, 2};
+        int[] test = {1, 2, 2};
         List<List<Integer>> result = PermutationsTwo.solution2(test);
         System.out.println(result.size());
         for (List<Integer> list : result) {
