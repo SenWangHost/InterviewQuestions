@@ -81,6 +81,7 @@ public class ValidSquare {
      * @param p4 the array representing the fourth coordinate.
      * @return true if those four points could form square, false otherwise.
      */
+    @SuppressWarnings("unlikely-arg-type")
     public static boolean solutionRef(int[] p1, int[] p2, int[] p3, int[] p4) {
         Set<Double> set = new HashSet<Double>(Arrays.asList(length(p1, p2),
                 length(p1, p3), length(p1, p4), length(p2, p3), length(p2, p4), length(p3, p4)));
