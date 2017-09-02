@@ -52,13 +52,34 @@ public class KthSmallestElementInSortedMatrix {
         return 0;
     }
     /**
-     * This is my another solution to this question.
+     * This is the reference solution to this question, which uses binary search on
+     * each row and count the number that is less than the mid element.
      * @param matrix the sorted matrix reprensented by two dimensional array.
      * @param k the kth smallest element.
      * @return the kth smallest element.
      */
-    public static int solution2(int[][] matrix, int k) {
-        return 0;
+    public static int solutionRef(int[][] matrix, int k) {
+        int row = matrix.length;
+        int col = matrix[0].length;
+        int lo = matrix[0][0];
+        int hi = matrix[row - 1][col - 1] + 1;
+        while (lo < hi) {
+            int mid = lo + (hi - lo) / 2;
+            int count = 0;
+            for (int i = 0; i < row; i++) {
+                int j = col - 1;
+                while (j >= 0 && matrix[i][j] > mid) {
+                    j--;
+                }
+                count += (j + 1);
+            }
+            if (count < k) {
+                lo = mid + 1;
+            } else {
+                hi = mid;
+            }
+        }
+        return lo;
     }
     /**
      * This is the test function for this question.
@@ -68,7 +89,7 @@ public class KthSmallestElementInSortedMatrix {
         // TODO Auto-generated method stub
         int[][] matrix = {{1,  5,  9}, {4, 7, 10}, {12, 13, 15}};
         int k = 2;
-        int result = KthSmallestElementInSortedMatrix.solution(matrix, k);
+        int result = KthSmallestElementInSortedMatrix.solutionRef(matrix, k);
         System.out.println(result);
     }
 
