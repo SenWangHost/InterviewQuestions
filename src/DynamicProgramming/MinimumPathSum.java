@@ -35,6 +35,9 @@ public class MinimumPathSum {
         return grid[row - 1][col - 1];
     }
     /**
+     * The reference solution has the same idea as mine and the code is also similar.
+     */
+    /**
      * This is the test function for this question.
      * @param args
      */
