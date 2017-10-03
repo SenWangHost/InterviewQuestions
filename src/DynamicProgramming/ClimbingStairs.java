@@ -37,7 +37,7 @@ public class ClimbingStairs {
      */
     public static void main(String[] args) {
         // TODO Auto-generated method stub
-        int test = 6;
+        int test = 7;
         System.out.println(ClimbingStairs.solution(test));
     }
 
