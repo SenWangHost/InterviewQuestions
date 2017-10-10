@@ -61,6 +61,40 @@ public class PlusOneLinkedList {
         return prev;
     }
     /**
+     * anothe solution of mine, which doesn't use reverse function
+     */
+    public static ListNode solution2(ListNode head) {
+        ListNode node = head;
+        ListNode increment = null;
+        while (node.next != null) {
+            if (node.val != 9) {
+                increment = node;
+            }
+            node = node.next;
+        }
+        if (node.val != 9) {
+            node.val += 1;
+            return head;
+        }
+        if (increment != null) {
+            increment.val += 1;
+            increment = increment.next;
+            while (increment != null) {
+                increment.val = 0;
+                increment = increment.next;
+            }
+            return head;
+        } else {
+            ListNode nHead = new ListNode(1);
+            nHead.next = head;
+            while (head != null) {
+                head.val = 0;
+                head = head.next;
+            }
+            return nHead;
+        }
+    }
+    /**
      * This is one reference solution, which use two pointers to keep
      * track of the possible digit that needs to be incremented. Also
      * use the dummy node at the beginning to handle the case, such as

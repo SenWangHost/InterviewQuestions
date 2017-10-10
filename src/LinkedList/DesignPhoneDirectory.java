@@ -1,7 +1,9 @@
-/**
- *
- */
 package LinkedList;
+
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Set;
 
 /**
  * Design a Phone Directory which supports the following operations:
@@ -33,54 +35,65 @@ public class DesignPhoneDirectory {
      * this is my own solution to this quetion.
      */
     public static class PhoneDirectory {
-        /**
-         * the point for curr node
-         */
-        private PhoneNumber curr;
+        Set<Integer> used = new HashSet<Integer>();
+        Queue<Integer> available = new LinkedList<Integer>();
+        int max;
         /**
          * the constructor for this class
          */
-        public PhoneDirectory(int n) {
-            PhoneNumber head = new PhoneNumber(0);
-            PhoneNumber node = head;
-            for (int i = 1; i < n; i++) {
-                node.next = new PhoneNumber(i);
-                node = node.next;
+        public PhoneDirectory(int maxNumbers) {
+            max = maxNumbers;
+            for (int i = 0; i < maxNumbers; i++) {
+                available.offer(i);
             }
-            curr = head;
+        }
+        /**
+         * the method for getting a number
+         */
+        public int get() {
+            Integer ret = available.poll();
+            if (ret == null) {
+                return -1;
+            }
+            used.add(ret);
+            return ret;
+        }
+        /**
+         * the method to check whether a number is avaliable or not.
+         */
+        public boolean check(int number) {
+            if (number >= max || number < 0) {
+                return false;
+            }
+            return !used.contains(number);
+        }
+        /**
+         * the method to recycle or release a number
+         */
+        public void release(int number) {
+            if (used.remove(number)) {
+                available.offer(number);
+            }
         }
     }
+    /**
+     * the reference solution has the same idea as mine.
+     */
     /**
      * This is the test function for this question.
      * @param args
      */
     public static void main(String[] args) {
         // TODO Auto-generated method stub
+        PhoneDirectory directory = new PhoneDirectory(3);
+        System.out.println(directory.get());
+        System.out.println(directory.get());
+        System.out.println(directory.check(2));
+        System.out.println(directory.get());
+        System.out.println(directory.check(2));
+        System.out.println(directory.get());
+        directory.release(2);
+        System.out.println(directory.check(2));
 
-    }
-    /**
-     * This is the definition for the node in singly linked list.
-     * @author SenWang
-     */
-    private static class PhoneNumber {
-        /**
-         * The field of value for the node.
-         */
-        @SuppressWarnings("unused")
-        private int val;
-        private boolean used;
-        /**
-         * The reference to the next node.
-         */
-        private PhoneNumber next;
-        /**
-         * The constructor for the node.
-         * @param x the value to be stored in the node.
-         */
-        private PhoneNumber(int x) {
-            val = x;
-            next = null;
-            used = false;
-        }
     }
 }
