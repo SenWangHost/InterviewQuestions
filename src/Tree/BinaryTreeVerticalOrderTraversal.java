@@ -112,6 +112,55 @@ public class BinaryTreeVerticalOrderTraversal {
         return result;
     }
     /**
+     * this is the reference solution to this question, which has the same idea but compute
+     * the index range ahead using recursion, which increase the runtime complexity of the algorithms,
+     */
+    public static List<List<Integer>> solutionRef(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        if (root == null) {
+            return result;
+        }
+        int[] range = new int[2];
+        computeRange(root, 0, range);
+        for (int i = range[0]; i <= range[1]; i++) {
+            result.add(new ArrayList<Integer>());
+        }
+        Deque<TreeNode> nodeQueue = new ArrayDeque<TreeNode>();
+        Deque<Integer> indexQueue = new ArrayDeque<Integer>();
+        nodeQueue.offer(root);
+        indexQueue.offer(-range[0]);
+        while (!nodeQueue.isEmpty()) {
+            int size= nodeQueue.size();
+            while (size > 0) {
+                TreeNode curr = nodeQueue.poll();
+                size--;
+                int index = indexQueue.poll();
+                result.get(index).add(curr.val);
+                if (curr.left != null) {
+                    nodeQueue.offer(curr.left);
+                    indexQueue.offer(index - 1);
+                }
+                if (curr.right != null) {
+                    nodeQueue.offer(curr.right);
+                    indexQueue.offer(index + 1);
+                }
+            }
+        }
+        return result;
+    }
+    /**
+     * the helper function to calculate the range
+     */
+    private static void computeRange(TreeNode root, int index, int[] range) {
+        if (root == null) {
+            return;
+        }
+        range[0] = Math.min(range[0], index);
+        range[1] = Math.max(range[1], index);
+        computeRange(root.left, index - 1, range);
+        computeRange(root.right, index + 1, range);
+    }
+    /**
      * This is the test function for this question.
      * @param args
      */
@@ -124,7 +173,7 @@ public class BinaryTreeVerticalOrderTraversal {
         root.right.right = new TreeNode(7);
         root.left.left = new TreeNode(4);
         root.left.right = new TreeNode(0);
-        List<List<Integer>> result = solution(root);
+        List<List<Integer>> result = solutionRef(root);
         for (List<Integer> list : result) {
             System.out.println(list);
         }
