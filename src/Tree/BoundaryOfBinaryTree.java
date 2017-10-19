@@ -118,6 +118,63 @@ public class BoundaryOfBinaryTree {
         getLeaves(root.right, list);
     }
     /**
+     * this is the reference solution to this question.
+     */
+    public static List<Integer> solutionRef(TreeNode root) {
+        List<Integer> result = new ArrayList<Integer>();
+        if (root == null) {
+            return result;
+        }
+        result.add(root.val);
+        leftBoundary(root.left, result);
+        addLeaves(root.left, result);
+        addLeaves(root.right, result);
+        rightBoundary(root.right, result);
+        return result;
+    }
+    /**
+     * add the left boundary values into the result
+     */
+    private static void leftBoundary(TreeNode root, List<Integer> list) {
+        if (root == null || (root.left == null && root.right == null)) {
+            return;
+        }
+        list.add(root.val);
+        if (root.left == null) {
+            leftBoundary(root.right, list);
+        } else {
+            leftBoundary(root.left, list);
+        }
+    }
+    /**
+     * add the right boundary values to the results;
+     */
+    private static void rightBoundary(TreeNode root, List<Integer> list) {
+        if (root == null || (root.left == null && root.right == null)) {
+            return;
+        }
+
+        if (root.right == null) {
+            rightBoundary(root.left, list);
+        } else {
+            rightBoundary(root.right, list);
+        }
+        list.add(root.val);
+    }
+    /**
+     * add the leaves to the result list
+     */
+    private static void addLeaves(TreeNode root, List<Integer> list) {
+        if (root == null) {
+            return;
+        }
+        if (root.left == null && root.right == null) {
+            list.add(root.val);
+        }
+        addLeaves(root.left, list);
+        addLeaves(root.right, list);
+    }
+    /**
      * THis is the test function for this question
      * @param args
      */
@@ -132,7 +189,7 @@ public class BoundaryOfBinaryTree {
         root.right.left = new TreeNode(6);
         root.right.left.left = new TreeNode(9);
         root.right.left.right = new TreeNode(10);
-        List<Integer> result = solution(root);
+        List<Integer> result = solutionRef(root);
         System.out.println(result);
     }
     /**
