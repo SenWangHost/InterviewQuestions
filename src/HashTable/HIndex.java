@@ -3,8 +3,6 @@
  */
 package HashTable;
 
-import java.util.Arrays;
-
 /**
  * Given an array of citations (each citation is a non-negative integer) of a researcher,
  * write a function to compute the researcher's h-index.
@@ -19,15 +17,23 @@ import java.util.Arrays;
  */
 public class HIndex {
     /**
-     * this is my own solution to this question.
+     * this is the reference solution to this question, which uses bucket sort
      */
-    public static int solution(int[] citations) {
-        int max = 0;
-        Arrays.sort(citations);
-        for (int i = citations.length - 1; i >= 0; i--) {
-            int position = citations.length - i;
-            if (citations[i] >= position) {
-                max = Math.max(max, citations[i]);
+    public static int solutionRef(int[] citations) {
+        int n = citations.length;
+        int[] bucket = new int[n + 1];
+        for (int c : citations) {
+            if (c >= n) {
+                bucket[n]++;
+            } else {
+                bucket[c]++;
+            }
+        }
+        int count = 0;
+        for (int i = n; i >= 0; i--) {
+            count += bucket[i];
+            if (count >= i) {
+                return i;
             }
         }
         return 0;
@@ -38,7 +44,8 @@ public class HIndex {
      */
     public static void main(String[] args) {
         // TODO Auto-generated method stub
-
+        int[] test = {3, 0, 6, 1, 5};
+        System.out.println(solutionRef(test));
     }
 
 }
