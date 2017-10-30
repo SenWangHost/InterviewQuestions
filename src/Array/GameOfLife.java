@@ -20,9 +20,9 @@ import java.util.Set;
  * Write a function to compute the next state (after one update) of the board given its current state.
  *
  * Follow up:
- * Could you solve it in-place? Remember that the board needs to be updated at the same time:
+ * 1. Could you solve it in-place? Remember that the board needs to be updated at the same time:
  * You cannot update some cells first and then use their updated values to update other cells.
- * In this question, we represent the board using a 2D array. In principle, the board is infinite,
+ * 2. In this question, we represent the board using a 2D array. In principle, the board is infinite,
  * which would cause problems when the active area encroaches the border of the array.
  * How would you address these problems?
  * @author SenWang
@@ -77,7 +77,51 @@ public class GameOfLife {
             }
         }
         return count;
-
+    }
+    /**
+     * this is the reference solution to this question, which uses two bits to store the first state
+     * and the second state.
+     */
+    public static void solutionRef(int[][] board) {
+        if (board == null || board.length == 0) {
+            return;
+        }
+        int row = board.length;
+        int col = board[0].length;
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                int lives = countLiveNeighbor(i, j, board);
+                // In the beginning, every 2nd bit is 0;
+                // So we only need to care about when will the 2nd bit become 1.
+                if (board[i][j] == 1 && lives >= 2 && lives <= 3) {
+                    board[i][j] = 3; // make the second bit 1: 01 ----> 11
+                }
+                if (board[i][j] == 0 && lives == 3) {
+                    board[i][j] = 2; // make the second bit 1: 00 -----> 10
+                }
+            }
+        }
+        // get the next state
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                board[i][j] >>= 1;
+            }
+        }
+    }
+    /**
+     * this is the helper method to count the live neighbor
+     */
+    private static int countLiveNeighbor(int x, int y, int[][] matrix) {
+        int row = matrix.length;
+        int col = matrix[0].length;
+        int count = 0;
+        for (int i = Math.max(0, x - 1); i <= Math.min(x + 1, row - 1); i++) {
+            for (int j = Math.max(0, y - 1); j <= Math.min(y + 1, col - 1); j++) {
+                count += matrix[i][j] & 1;
+            }
+        }
+        count -= matrix[x][y] & 1;
+        return count;
     }
     /**
      * This is the test function for this question.
