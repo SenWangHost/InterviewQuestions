@@ -3,6 +3,8 @@
  */
 package Array;
 
+import java.util.Arrays;
+
 /**
  * Winter is coming! Your first job during the contest is to design a standard heater with fixed warm radius to warm all the houses.
  * Now, you are given positions of houses and heaters on a horizontal line, find out minimum radius of heaters so that
@@ -32,8 +34,23 @@ package Array;
  */
 public class Heaters {
     /**
-     * this
+     * this is the reference solution to this question.
      */
+    public static int solution(int[] houses, int[] heaters) {
+        Arrays.sort(houses);
+        Arrays.sort(heaters);
+        int i = 0;
+        int j = 0;
+        int result = 0;
+        while (i < houses.length) {
+            while (j < heaters.length - 1 && Math.abs(heaters[j + 1] - houses[i]) <= Math.abs(heaters[j] - houses[i])) {
+                j++;
+            }
+            result = Math.max(result, Math.abs(heaters[j] - houses[i]));
+            i++;
+        }
+        return result;
+    }
     /**
      * This is the test function for this question.
      * @param args
