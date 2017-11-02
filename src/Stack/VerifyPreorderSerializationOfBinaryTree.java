@@ -3,6 +3,9 @@
  */
 package Stack;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 /**
  * One way to serialize a binary tree is to use pre-order traversal. When we encounter a non-null node, we record the node's value.
  * If it is a null node, we record using a sentinel value such as #.
@@ -36,10 +39,46 @@ package Stack;
  */
 public class VerifyPreorderSerializationOfBinaryTree {
     /**
-     * this is my own solution to this question.
+     * this is the reference solution to this question, which makes use of concepts of indegree and outdegree
+     * of a tree node.
      */
     public static boolean solution(String preorder) {
-        return false;
+        if (preorder == null) {
+            return false;
+        }
+        String[] array = preorder.split(",");
+        int degree = -1;
+        for (String str : array) {
+            degree++;
+            if (degree > 0) {
+                return false;
+            }
+            if (!str.equals("#")) {
+                degree -= 2;
+            }
+        }
+        return degree == 0;
+    }
+    /**
+     * this is another solution to this question.
+     */
+    public static boolean solution2(String preorder) {
+        if (preorder == null || preorder.length() == 0) {
+            return false;
+        }
+        String[] array = preorder.split(",");
+        Deque<String> stack = new ArrayDeque<>();
+        for (String str : array) {
+            while (str.equals("#") && !stack.isEmpty() && stack.peek().equals("#")) {
+                stack.pop();
+                if (stack.isEmpty()) {
+                    return false;
+                }
+                stack.pop();
+            }
+            stack.push(str);
+        }
+        return stack.size() == 1 && stack.peek().equals("#");
     }
     /**
      * This is the test function for this question.
