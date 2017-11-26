@@ -3,3 +3,8 @@
 /.DS_Store-src
 /.project/
 /.classpath/
+*.
+*.
+*.prefs
+.project
+.classpath
